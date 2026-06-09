@@ -16,9 +16,8 @@ init({
 export default class MQTTService {
   constructor() {
     this.client = null;
-  } // <-- Removei o '}' extra daqui para a classe continuar aberta!
+  } 
 
-  // Corrigido: Removido o ';' depois dos parâmetros
   connect(config, onMessage, onConnect, onFailure) {
     const { host, port, path, user, pass, clientId } = config;
 
