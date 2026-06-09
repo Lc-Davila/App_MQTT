@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { env } from 'expo-env';
+import { env } from 'expo';
 import { StyleSheet, View, Text } from 'react-native';
-import MQTTService from './src/services/mqttService';
+import MQTTService from './src/service/mqttService';
 import StatusModal from './src/components/StatusModal';
-import LightControl from './src/components/LightControl';
+import LightControl from './src/components/StatusModal';
 import Gauges from './src/components/Gauges';
 
 const mqtt = new MQTTService();
