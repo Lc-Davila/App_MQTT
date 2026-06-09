@@ -40,15 +40,13 @@ export default class MQTTService {
     this.client.connect(options);
   }
 
-  // Corrigido: Removido o ';' depois de (topic)
   subscribe(topic) {
     this.client.subscribe(topic);
   }
 
-  // Corrigido: Removido o ';' depois de (topic, message)
   publish(topic, message) {
     const msg = new Paho.MQTT.Message(message);
     msg.destinationName = topic;
     this.client.send(msg);
   }
-} // <-- Agora a classe fecha aqui no final de tudo, englobando todas as funções!
+}
