@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native'; // <-- Removido o import do 'expo' que quebrava
+import { StyleSheet, View, Text } from 'react-native'; 
 import MQTTService from './src/service/mqttService';
 import StatusModal from './src/components/StatusModal';
-import LightControl from './src/components/LightControl'; // <-- Corrigido o caminho (estava importando StatusModal de novo)
+import LightControl from './src/components/LightControl'; 
 import Gauges from './src/components/Gauges';
 
 const mqtt = new MQTTService();
@@ -14,12 +14,11 @@ export default function App() {
   const [temp, setTemp] = useState(0);
   const [hum, setHum] = useState(0);
 
-  // CORRIGIDO: Adicionado aspas em textos e configurado para usar o process.env que arrumamos antes
   const mqttConfig = {
-    host: process.env.EXPO_PUBLIC_MQTT_HOST || 'fe2ce9e9eed3484fbeebb904490f2cb3.s1.eu.hivemq.cloud',
-    port: Number(process.env.EXPO_PUBLIC_MQTT_PORT) || 8883,
-    user: process.env.EXPO_PUBLIC_MQTT_USER || 'lucas_martins',
-    pass: process.env.EXPO_PUBLIC_MQTT_PASS || 'Goleiro1',
+    host: process.env.MQTT_HOST || 'fe2ce9e9eed3484fbeebb904490f2cb3.s1.eu.hivemq.cloud',
+    port: Number(process.env.MQTT_PORT) || 8884,
+    user: process.env.MQTT_USER || 'lucas_martins',
+    pass: process.env.MQTT_PASS || 'Goleiro1',
     clientId: 'RN_App_' + Math.random().toString(16).substr(2, 8),
   };
 

@@ -2,7 +2,6 @@ import init from 'react_native_mqtt';
 import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native'; 
 
-// Escolhe o armazenamento certo dependendo de onde o app está rodando
 const dispositivoStorage = Platform.OS === 'web' ? window.localStorage : AsyncStorage;
 
 init({
