@@ -17,7 +17,7 @@ export default function App() {
   // CORREÇÃO: Ajustado para mapear variáveis com EXPO_PUBLIC_ e alterado a porta padrão para 8084 (WebSocket)
   const mqttConfig = {
     host: process.env.EXPO_PUBLIC_MQTT_HOST || 'fe2ce9e9eed3484fbeebb904490f2cb3.s1.eu.hivemq.cloud',
-    port: Number(process.env.EXPO_PUBLIC_MQTT_PORT) || 8084,
+    port: Number(process.env.EXPO_PUBLIC_MQTT_PORT) || 8884,
     path: '',
     user: process.env.EXPO_PUBLIC_MQTT_USER || 'lucas_etec',
     pass: process.env.EXPO_PUBLIC_MQTT_PASS || 'Goleiro1',
@@ -46,7 +46,6 @@ export default function App() {
       (err) => {
         setIsConnected(false);
         setShowError(true);
-        console.error("Falha na conexão MQTT:", err);
       }
     );
   };
