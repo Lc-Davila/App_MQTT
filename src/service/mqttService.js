@@ -2,6 +2,7 @@ import init from 'react_native_mqtt';
 import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native'; 
 
+// Escolhe o armazenamento correto baseado no ambiente de execução
 const dispositivoStorage = Platform.OS === 'web' ? window.localStorage : AsyncStorage;
 
 init({
@@ -18,21 +19,24 @@ export default class MQTTService {
   } 
 
   connect(config, onMessage, onConnect, onFailure) {
-    const { host, port, path, user, pass, clientId } = config;
+    const { host, port, path = "", user, pass, clientId } = config;
 
+    // Criamos o cliente Paho normalmente
     this.client = new Paho.MQTT.Client(host, port, path, clientId);
 
     this.client.onMessageArrived = (message) => {
       onMessage(message.destinationName, message.payloadString);
     };
 
+    // CONFIGURAÇÃO COMPLETA DE SEGURANÇA PARA O HIVEMQ CLOUD
     const options = {
       userName: user,
       password: pass,
-      useSSL: true,
+      useSSL: true,             // DIZ PARA O PAHO USAR WSS:// EM VEZ DE WS://
+      mqttVersion: 4,           // Força o protocolo MQTT 3.1.1 (obrigatorio para o HiveMQ)
       onSuccess: onConnect,
       onFailure: onFailure,
-      timeout: 3,
+      timeout: 10,              // 10 segundos de limite para dar tempo de autenticar na nuvem
       keepAliveInterval: 60,
     };
 
@@ -40,12 +44,16 @@ export default class MQTTService {
   }
 
   subscribe(topic) {
-    this.client.subscribe(topic);
+    if (this.client && this.client.isConnected()) {
+      this.client.subscribe(topic);
+    }
   }
 
   publish(topic, message) {
-    const msg = new Paho.MQTT.Message(message);
-    msg.destinationName = topic;
-    this.client.send(msg);
+    if (this.client && this.client.isConnected()) {
+      const msg = new Paho.MQTT.Message(message);
+      msg.destinationName = topic;
+      this.client.send(msg);
+    }
   }
 }

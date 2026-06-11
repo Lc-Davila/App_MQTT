@@ -14,11 +14,13 @@ export default function App() {
   const [temp, setTemp] = useState(0);
   const [hum, setHum] = useState(0);
 
+  // CORREÇÃO: Ajustado para mapear variáveis com EXPO_PUBLIC_ e alterado a porta padrão para 8084 (WebSocket)
   const mqttConfig = {
-    host: process.env.MQTT_HOST || 'fe2ce9e9eed3484fbeebb904490f2cb3.s1.eu.hivemq.cloud',
-    port: Number(process.env.MQTT_PORT) || 8884,
-    user: process.env.MQTT_USER || 'lucas_martins',
-    pass: process.env.MQTT_PASS || 'Goleiro1',
+    host: process.env.EXPO_PUBLIC_MQTT_HOST || 'fe2ce9e9eed3484fbeebb904490f2cb3.s1.eu.hivemq.cloud',
+    port: Number(process.env.EXPO_PUBLIC_MQTT_PORT) || 8084,
+    path: '',
+    user: process.env.EXPO_PUBLIC_MQTT_USER || 'lucas_etec',
+    pass: process.env.EXPO_PUBLIC_MQTT_PASS || 'Goleiro1',
     clientId: 'RN_App_' + Math.random().toString(16).substr(2, 8),
   };
 
@@ -44,6 +46,7 @@ export default function App() {
       (err) => {
         setIsConnected(false);
         setShowError(true);
+        console.error("Falha na conexão MQTT:", err);
       }
     );
   };
@@ -51,6 +54,8 @@ export default function App() {
   const toggleLight = () => {
     const newState = isLightOn ? "0" : "1";
     mqtt.publish('casa/luz', newState);
+    // Atualização otimista local para melhor experiência de clique na interface
+    setIsLightOn(!isLightOn); 
   };
 
   return (
